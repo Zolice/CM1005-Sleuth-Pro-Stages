@@ -69,7 +69,7 @@ To obtain the original unedited files, unzip the zip files in the respective fol
 - [x] Stage 1 - Surveillance
 - [x] Stage 2 - Stakeout
 - [x] Stage 3 - Cornered
-- [ ] <a href="Case-403-Stage 4-Captured">Stage 4 - Captured</a>
+- [ ] <a href="case-403---stage-4---captured">Stage 4 - Captured</a>
 
 ## Case 501 - The case of the Ghostly Witnesses
 - [x] Stage 1 - Marina Von Neuman
@@ -114,7 +114,7 @@ To obtain the original unedited files, unzip the zip files in the respective fol
 - [ ] Stage 4 - Club Criminal
 
 # Incomplete Cases
-## Case 403 Stage 4 Captured
+## Case 403 - Stage 4 - Captured
 75% Complete, feedback did not suggest any improvements and I was unable to achieve 100%. 
 
 This contributed to me gaining 99% instead of 100% for `Sleuth - Rookie Stage`.
