@@ -8,6 +8,8 @@ Note that the stages assigned to other students/users may be different.
 
 My code can be used as a reference to help you understand the stages, or get an idea on how to solve them, but kindly please do not copy directly. 
 
+Do note that there might be more than 1 method to solve the stages, and the code provided is not the only way to solve the stages. 
+
 # Instructions
 To start, open the `index.html` file in the respective folders.
 
@@ -69,7 +71,7 @@ To obtain the original unedited files, unzip the zip files in the respective fol
 - [x] Stage 1 - Surveillance
 - [x] Stage 2 - Stakeout
 - [x] Stage 3 - Cornered
-- [ ] <a href="case-403---stage-4---captured">Stage 4 - Captured</a>
+- [ ] <a href="#case-403---stage-4---captured">Stage 4 - Captured</a>
 
 ## Case 501 - The case of the Ghostly Witnesses
 - [x] Stage 1 - Marina Von Neuman
@@ -81,25 +83,25 @@ To obtain the original unedited files, unzip the zip files in the respective fol
 - [x] Stage 1 - Old Friends
 - [x] Stage 2 - A delicate matter
 - [x] Stage 3 - Out of the picture
-- [ ] Stage 4 - A donation
+- [x] Stage 4 - A donation
 
 ## Case 601 - The case of the Sequence Killer
-- [ ] Stage 1 - Escaped
-- [ ] Stage 2 - Cross-reference
-- [ ] Stage 3 - Murdering again.
-- [ ] Stage 4 - Narrowing in
+- [x] Stage 1 - Escaped
+- [x] Stage 2 - Cross-reference
+- [x] Stage 3 - Murdering again.
+- [x] Stage 4 - Narrowing in
 
 ## Case 701 - The case of the Usual Suspects
-- [ ] Stage 1 - Probable Pickpocket
-- [ ] Stage 2 - Credible cat-thief
-- [ ] Stage 3 - Recognisable robber
-- [ ] Stage 4 - Believable burglar
+- [x] Stage 1 - Probable Pickpocket
+- [x] Stage 2 - Credible cat-thief
+- [x] Stage 3 - Recognisable robber
+- [x] Stage 4 - Believable burglar
 
 ## Case 702 - The case of the Vanishing Vannevar
-- [ ] Stage 1 - Mobilizes
-- [ ] Stage 2 - Downtown traffic
-- [ ] Stage 3 - Where's Vannevar
-- [ ] Stage 4 - High speed chase
+- [x] Stage 1 - Mobilizes
+- [x] Stage 2 - Downtown traffic
+- [x] Stage 3 - Where's Vannevar
+- [ ] Stage 4 - High speed chase (Incomplete)
 
 ## Case 801 - The case of the Cooley Gang
 - [ ] Stage 1 - Rigoletto
