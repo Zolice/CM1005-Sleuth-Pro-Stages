@@ -104,15 +104,15 @@ To obtain the original unedited files, unzip the zip files in the respective fol
 - [ ] Stage 4 - High speed chase (Incomplete)
 
 ## Case 801 - The case of the Cooley Gang
-- [ ] Stage 1 - Rigoletto
-- [ ] Stage 2 - Don Giovanni
-- [ ] Stage 3 - La Traviata
-- [ ] Stage 4 - The Marriage of Figaro
+- [x] Stage 1 - Rigoletto
+- [x] Stage 2 - Don Giovanni
+- [x] Stage 3 - La Traviata
+- [x] Stage 4 - The Marriage of Figaro
 
 ## Case 802 - The case of Monte Carlo
-- [ ] Stage 1 - Card Shark
-- [ ] Stage 2 - King of Cards
-- [ ] Stage 3 - Card Counter
+- [x] Stage 1 - Card Shark
+- [x] Stage 2 - King of Cards
+- [ ] Stage 3 - Card Counter(Incomplete)
 - [ ] Stage 4 - Club Criminal
 
 # Incomplete Cases
