@@ -10,6 +10,13 @@ My code can be used as a reference to help you understand the stages, or get an 
 
 Do note that there might be more than 1 method to solve the stages, and the code provided is not the only way to solve the stages. 
 
+# Score Achieved
+Rookie score: 99%
+
+Pro score: 100%
+
+![score](images/score.png)
+
 # Instructions
 To start, open the `index.html` file in the respective folders.
 
