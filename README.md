@@ -113,7 +113,7 @@ To obtain the original unedited files, unzip the zip files in the respective fol
 - [x] Stage 1 - Card Shark
 - [x] Stage 2 - King of Cards
 - [x] Stage 3 - Card Counter
-- [ ] Stage 4 - Club Criminal
+- [x] Stage 4 - Club Criminal
 
 # Incomplete Cases
 ## Case 403 - Stage 4 - Captured

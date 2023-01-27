@@ -48,10 +48,6 @@ function setup()
 }
 
 //write your setWinningHand function here
-// - Write a function called setWinningHand and call it from setup.
-// - The function should take each card in hand_to_win and seacrh for a match in cards.
-// - Matching cards should be added to the hand array
-// - You'll need to use a nested for loop and break statement in the inner loop to stop searching once you've found a match.
 function setWinningHand() {
 	for (var i = 0; i < hand_to_win.length; i++) {
 		for (var j = 0; j < cards.length; j++) {
@@ -64,10 +60,6 @@ function setWinningHand() {
 }
 
 //write your shuffleSeed() function here.
-// - You also need to write a shuffleSeed() function. 
-// - This needs to return an array of 52 random integers between 10 and 87.
-// - Make sure you use the push method to add values to your array and the round function to convert your random values to integers.
-// - Call shuffleSeed in setup and use the return value as the argument for shuffleDeck().
 function shuffleSeed() {
 	var seed = [];
 	for (var i = 0; i < 52; i++) {
