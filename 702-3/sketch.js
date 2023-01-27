@@ -1,12 +1,12 @@
 /*
 
 Officer: 5533988
-CaseNum: 702-3-60642792-5533988
+CaseNum: 702-3-67978992-5533988
 
 Case 702 - The case of Vanishing Vannevar
 Stage 4 - High speed chase
 
-“All units: Vannevar is on the run. They are driving a green car with a licence_plate of VA6TUX.  Pursue at speed.
+“All units: Vannevar is on the run. They are driving a white car with a Licence_Plate of OGPPYC.  Pursue at speed.
 I repeat pursue at speed.” Okay Vannevar’s game is nearly up. Go get him kid.
 Complete the helper functions below to locate, chase and arrest Vannevar.
 
@@ -19,78 +19,59 @@ but you should ONLY use the following commands and techniques:
 	- Traversing arrays with for loops
 	- calling functions and returning values
 
-HINT: make sure you take a look at the initialisation of sleuthPI_carObject and the cars in
-Vehicles_Array to understand their properties.
+HINT: make sure you take a look at the initialisation of Detective_CarObject and the cars in
+Traffic_List to understand their properties.
 
 */
 
 ///////////////////////// HELPER FUNCTIONS /////////////////////
 
-function DriveCar() {
+function driveCar() {
 	/*
 	This function should do the following: 
-	 - increment sleuthPI_carObject's kms_amt property by its gas_amt property 
-	 - add a random amount between -0.02 and 0.02 to sleuthPI_carObject's engineRumble_value property
-	 - use the constrain function to constrain sleuthPI_carObject's engineRumble_value property to values between 0.09 and 1.16
-	 - call the RunCarEngine function passing sleuthPI_carObject as an argument
+	 - increment Detective_CarObject's Kms_Driven property by its Gas_Val property 
+	 - add a random amount between -0.03 and 0.03 to Detective_CarObject's EngineShudder_Amount property
+	 - use the constrain function to constrain Detective_CarObject's EngineShudder_Amount property to values between 0.09 and 0.95
+	 - call the cycleMotor function passing Detective_CarObject as an argument
 	*/
 
-	sleuthPI_carObject.kms_amt += sleuthPI_carObject.gas_amt;
-	sleuthPI_carObject.engineRumble_value += random(-0.02, 0.02);
-	sleuthPI_carObject.engineRumble_value = constrain(sleuthPI_carObject.engineRumble_value, 0.09, 1.16);
-	RunCarEngine(sleuthPI_carObject);
+	Detective_CarObject.Kms_Driven += Detective_CarObject.Gas_Val;
+	Detective_CarObject.EngineShudder_Amount += random(-0.03, 0.03);
+	Detective_CarObject.EngineShudder_Amount = constrain(Detective_CarObject.EngineShudder_Amount, 0.09, 0.95);
+	cycleMotor(Detective_CarObject);
 }
 
 
-function SwapLanes(vehicle) {
+function changeLanes(targetCar) {
 	/*
 	This function should do the following: 
-	 - move vehicle from one lane to the other.
+	 - move targetCar from one lane to the other.
 	 - do the move in a single step without any extra animation.
-	 - use LanePos_A and LanePos_B to effect the change.
-	 - finally you should return vehicle at the end of the function.
-	 hint: You will need to modify the coordinate_x property of vehicle.
+	 - use Lane_Coordinate_A and Lane_Coordinate_B to effect the change.
+	 - finally you should return targetCar at the end of the function.
+	 hint: You will need to modify the x property of targetCar.
 	*/
 
-	if (vehicle.coordinate_x == LanePos_A) {
-		vehicle.coordinate_x = LanePos_B;
+	if (targetCar.x === Lane_Coordinate_A) {
+		targetCar.x = Lane_Coordinate_B;
 	}
 	else {
-		vehicle.coordinate_x = LanePos_A;
+		targetCar.x = Lane_Coordinate_A;
 	}
-	return vehicle;
+
+	return targetCar;
 }
 
 
-function SearchCarIsAhead(carObj) {
+function carAhead(Car_obj_A, Car_obj_B) {
 	/*
 	This function should do the following: 
-	 - determine if carObj is in the same lane and less than 200px behind any of the cars in Vehicles_Array.
-	 - do this by traversing Vehicles_Array and comparing each car's kms_amt property to that of carObj.
-	 - use the licence_plate property of each car to ignore cars that match carObj.
-	 - if you find a car that matches these requirements then return the index representing the car's position in Vehicles_Array. Otherwise return false.
+	 - determine if Car_obj_A is in the same lane and less than 200px behind Car_obj_B.
+	 - do this by comparing the two cars' Kms_Driven properties
+	 - if these requirements are met then return true. Otherwise return false.
 	*/
 
-	for (var i = 0; i < Vehicles_Array.length; i++) {
-		if (Vehicles_Array[i].licence_plate != carObj.licence_plate &&
-			Vehicles_Array[i].coordinate_x == carObj.coordinate_x &&
-			Vehicles_Array[i].kms_amt > carObj.kms_amt &&
-			Vehicles_Array[i].kms_amt - carObj.kms_amt < 200) {
-			return i;
-		}
-	}
-	return false;
-}
-
-
-function CheckIsAtSide(targetVehicle) {
-	/*
-	This function should do the following: 
-	 - determine if targetVehicle is parallel with sleuthPI_carObject.
-	 - if targetVehicle is found to be parallel to sleuthPI_carObject then return true.
-	 - cars are considered parallel if the absolute difference between their kms_amt properties is less than 25 px and they have non-matching coordinate_x properties	*/
-
-	if (abs(targetVehicle.kms_amt - sleuthPI_carObject.kms_amt) < 25 && targetVehicle.coordinate_x != sleuthPI_carObject.coordinate_x) {
+	if (Car_obj_A.x === Car_obj_B.x && Car_obj_A.Kms_Driven < Car_obj_B.Kms_Driven && Car_obj_B.Kms_Driven - Car_obj_A.Kms_Driven < 200) {
 		return true;
 	}
 	else {
@@ -99,79 +80,96 @@ function CheckIsAtSide(targetVehicle) {
 }
 
 
-function SpotAssailant() {
+function checkVehicleIsParallel(CarObj_A, CarObj_B) {
 	/*
 	This function should do the following: 
-	 - Check cars passing parallel to sleuthPI_carObject to see if they match the licence_plate property in the assailant description.
-	 - it does this by traversing Vehicles_Array and calling CheckIsAtSide for each car
-.	 - if a positive result is returned then the licence_plate property of the found car is then checked against the assailant description.
-	 - if a match is found then the object of the car in question is returned.
-	 - otherwise return false.
+	 - determine if CarObj_A is parallel with CarObj_B.
+	 - if CarObj_A is found to be parallel to CarObj_B then return true.
+	 - cars are considered parallel if the absolute difference between their Kms_Driven properties is less than 25 px and they have non-matching x properties	*/
+
+	if (abs(CarObj_A.Kms_Driven - CarObj_B.Kms_Driven) < 25 && CarObj_A.x !== CarObj_B.x) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
+function identifyCriminal() {
+	/*
+	This function should do the following: 
+	 - Check cars passing parallel to Detective_CarObject to see if they match the Licence_Plate property in the criminal description.
+	 - it does this by traversing Traffic_List and calling checkVehicleIsParallel for each car
+.	 - if a positive result is returned then the Licence_Plate property of the found car is then checked against the criminal description.
+	 - if a match is found then the car in question is assigned to the global variable criminal.
 	*/
 
-	for (var i = 0; i < Vehicles_Array.length; i++) {
-		if (CheckIsAtSide(Vehicles_Array[i])) {
-			if (Vehicles_Array[i].licence_plate == "VA6TUX") {
-				return Vehicles_Array[i];
+	for (var i = 0; i < Traffic_List.length; i++) {
+		if (checkVehicleIsParallel(Detective_CarObject, Traffic_List[i])) {
+			if (Traffic_List[i].Licence_Plate === "OGPPYC") {
+				criminal = Traffic_List[i];
 			}
 		}
 	}
-	return false;
 }
 
 
-function ChaseAssailant() {
+function pursueCriminal() {
 	/*
 	This function should do the following: 
-	 - scale the gas_amt property of sleuthPI_carObject by a factor of 1.001.
-	 - use the min function to make sure that sleuthPI_carObject's gas_amt property does not exceed 6.
-	 - it should call SearchCarIsAhead to detect any cars in front of sleuthPI_carObject.
-	 - if a positive result is returned it should check to see if the licence_plate property of that car matches that of assailant.
-	 - for a match, StopAssailant should be called, otherwise call SwapLanes.
+	 - only operate if the Tailing_Criminal property of Detective_CarObject is true and the global variable criminal is assigned to an object.
+	 - scale the Gas_Val property of Detective_CarObject by a factor of 1.001.
+	 - use the min function to make sure that Detective_CarObject's Gas_Val property does not exceed 6.
+	 - it should traverse Traffic_List calling carAhead for each car to detect any cars in front of Detective_CarObject.
+	 - if a positive result is returned it should check to see if the Licence_Plate property of that car matches that of criminal.
+	 - for a match, bookCriminal should be called, otherwise call changeLanes.
 	*/
 
-	sleuthPI_carObject.gas_amt = min(sleuthPI_carObject.gas_amt * 1.001, 6);
-	var index = SearchCarIsAhead(sleuthPI_carObject)
-	if(index) {
-		var carAhead = Vehicles_Array[index];
-		if (carAhead.licence_plate == assailant.licence_plate) {
-			StopAssailant(carAhead);
-		}
-		else {
-			SwapLanes(sleuthPI_carObject);
+	if (Detective_CarObject.Tailing_Criminal && criminal) {
+		Detective_CarObject.Gas_Val = min(Detective_CarObject.Gas_Val * 1.001, 6);
+		for (var i = 0; i < Traffic_List.length; i++) {
+			if (carAhead(Detective_CarObject, Traffic_List[i])) {
+				if (Traffic_List[i].Licence_Plate === criminal.Licence_Plate) {
+					bookCriminal(i);
+				}
+				else {
+					changeLanes(Detective_CarObject);
+				}
+			}
 		}
 	}
 }
 
 
-function StopAssailant(targetVehicle) {
+function bookCriminal(vehicle) {
 	/*
 	This function should do the following: 
-	 - set the isDetained property of targetVehicle to true.
-	 - set the arresting_assailant property of sleuthPI_carObject to true.
-	 - set the gas_amt properties of both vehicles to zero.
+	 - set the isArrested property of the car at the index of vehicle to true.
+	 - set the IsApprehending_Criminal property of Detective_CarObject to true.
+	 - set the Gas_Val properties of both vehicles to zero.
 	*/
 
-	targetVehicle.isDetained = true;
-	sleuthPI_carObject.arresting_assailant = true;
-	targetVehicle.gas_amt = 0;
-	sleuthPI_carObject.gas_amt = 0;
+	Traffic_List[vehicle].isArrested = true;
+	Detective_CarObject.IsApprehending_Criminal = true;
+	Detective_CarObject.Gas_Val = 0;
+	Traffic_List[vehicle].Gas_Val = 0;
 }
 
 
 //////////////DO NOT CHANGE CODE BELOW THIS LINE//////////////////
 
-var sleuthPI_carObject;
+var Detective_CarObject;
 
 var roadWidth;
 var roadLeftEdge;
-var LanePos_A;
-var LanePos_B;
+var Lane_Coordinate_A;
+var Lane_Coordinate_B;
 var carImages = {};
-var assailant;
+var criminal;
 
-var Vehicles_Array = [
-	{ coordinate_x: 500, coordinate_y: 0, kms_amt: -200, car_type: 'blueCar', licence_plate: '3F6NLE', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 200, car_type: 'blueCar', licence_plate: 'JXBUUS', gas_amt: 2, exhaust: [] }, { coordinate_x: 300, coordinate_y: 0, kms_amt: 600, car_type: 'blueCar', licence_plate: '9O75DF', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 1000, car_type: 'whiteCar', licence_plate: 'WG5QBH', gas_amt: 2, exhaust: [] }, { coordinate_x: 300, coordinate_y: 0, kms_amt: 1400, car_type: 'greenCar', licence_plate: 'OZ76J4', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 1800, car_type: 'greenCar', licence_plate: 'QJQOVI', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 2200, car_type: 'redCar', licence_plate: 'LLYMIZ', gas_amt: 2, exhaust: [] }, { coordinate_x: 300, coordinate_y: 0, kms_amt: 2600, car_type: 'greenCar', licence_plate: 'VA6TUX', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 3000, car_type: 'greenCar', licence_plate: '17HLN9', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 3400, car_type: 'greenCar', licence_plate: 'EY7O27', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 3800, car_type: 'whiteCar', licence_plate: 'CNUO57', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 4200, car_type: 'redCar', licence_plate: '3KTH39', gas_amt: 2, exhaust: [] }, { coordinate_x: 300, coordinate_y: 0, kms_amt: 4600, car_type: 'whiteCar', licence_plate: 'VO7IEH', gas_amt: 2, exhaust: [] }, { coordinate_x: 300, coordinate_y: 0, kms_amt: 5000, car_type: 'blueCar', licence_plate: 'X1U6GX', gas_amt: 2, exhaust: [] }, { coordinate_x: 300, coordinate_y: 0, kms_amt: 5400, car_type: 'greenCar', licence_plate: 'WOGVXG', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 5800, car_type: 'redCar', licence_plate: '57DJTF', gas_amt: 2, exhaust: [] }, { coordinate_x: 300, coordinate_y: 0, kms_amt: 6200, car_type: 'blueCar', licence_plate: 'UIZ78Y', gas_amt: 2, exhaust: [] }, { coordinate_x: 300, coordinate_y: 0, kms_amt: 6600, car_type: 'greenCar', licence_plate: 'ST7J5K', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 7000, car_type: 'whiteCar', licence_plate: 'WU3XGL', gas_amt: 2, exhaust: [] }, { coordinate_x: 500, coordinate_y: 0, kms_amt: 7400, car_type: 'redCar', licence_plate: 'UE6FUH', gas_amt: 2, exhaust: [] }
+var Traffic_List = [
+	{ x: 500, y: 0, Kms_Driven: -200, Car_Variety: 'blueCar', Licence_Plate: '1O6AD2', Gas_Val: 2, exhaust: [] }, { x: 300, y: 0, Kms_Driven: 200, Car_Variety: 'greenCar', Licence_Plate: 'J0PS9Z', Gas_Val: 2, exhaust: [] }, { x: 300, y: 0, Kms_Driven: 600, Car_Variety: 'blueCar', Licence_Plate: 'INZNPB', Gas_Val: 2, exhaust: [] }, { x: 300, y: 0, Kms_Driven: 1000, Car_Variety: 'blueCar', Licence_Plate: 'NHTDUH', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 1400, Car_Variety: 'whiteCar', Licence_Plate: 'RXVFAZ', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 1800, Car_Variety: 'redCar', Licence_Plate: 'CV0ZJ3', Gas_Val: 2, exhaust: [] }, { x: 300, y: 0, Kms_Driven: 2200, Car_Variety: 'whiteCar', Licence_Plate: 'PCQUAB', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 2600, Car_Variety: 'whiteCar', Licence_Plate: 'AF1YUK', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 3000, Car_Variety: 'redCar', Licence_Plate: '6HMM1Z', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 3400, Car_Variety: 'whiteCar', Licence_Plate: 'OGPPYC', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 3800, Car_Variety: 'blueCar', Licence_Plate: 'AULRLI', Gas_Val: 2, exhaust: [] }, { x: 300, y: 0, Kms_Driven: 4200, Car_Variety: 'blueCar', Licence_Plate: 'QU3UZH', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 4600, Car_Variety: 'redCar', Licence_Plate: 'MJPTFR', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 5000, Car_Variety: 'redCar', Licence_Plate: '1SX1JA', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 5400, Car_Variety: 'greenCar', Licence_Plate: '1Z4LK8', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 5800, Car_Variety: 'greenCar', Licence_Plate: '5N2HBR', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 6200, Car_Variety: 'redCar', Licence_Plate: 'YY2IKC', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 6600, Car_Variety: 'blueCar', Licence_Plate: 'TC01KY', Gas_Val: 2, exhaust: [] }, { x: 500, y: 0, Kms_Driven: 7000, Car_Variety: 'greenCar', Licence_Plate: 'VMQJY3', Gas_Val: 2, exhaust: [] }, { x: 300, y: 0, Kms_Driven: 7400, Car_Variety: 'blueCar', Licence_Plate: '5FJ8GO', Gas_Val: 2, exhaust: [] }
 ];
 
 
@@ -198,20 +196,20 @@ function setup() {
 
 	roadWidth = 400;
 	roadLeftEdge = 200;
-	LanePos_A = 300;
-	LanePos_B = 500;
+	Lane_Coordinate_A = 300;
+	Lane_Coordinate_B = 500;
 
-	sleuthPI_carObject =
+	Detective_CarObject =
 	{
-		coordinate_x: roadLeftEdge + roadWidth / 4,
-		coordinate_y: 550,
-		kms_amt: 0,
-		gas_amt: 3,
-		engineRumble_value: 0,
-		car_type: 'detective',
-		licence_plate: '5L3UTH',
-		arresting_assailant: false,
-		chasing_assailant: false,
+		x: roadLeftEdge + roadWidth / 4,
+		y: 550,
+		Kms_Driven: 0,
+		Gas_Val: 3,
+		EngineShudder_Amount: 0,
+		Car_Variety: 'detective',
+		Licence_Plate: '5L3UTH',
+		IsApprehending_Criminal: false,
+		Tailing_Criminal: false,
 		exhaust: []
 	}
 
@@ -226,11 +224,11 @@ function draw() {
 	drawRoad();
 	drawCars();
 
-	if (assailant) {
-		if (assailant.isDetained) {
+	if (criminal) {
+		if (criminal.isArrested) {
 			fill(255);
 
-			text("assailant isDetained!", width / 2, height / 2);
+			text("criminal isArrested!", width / 2, height / 2);
 		}
 
 	}
@@ -238,29 +236,32 @@ function draw() {
 
 	////////////////////// HANDLE DETECTIVE /////////////////////////
 
-	if (!sleuthPI_carObject.chasing_assailant && !sleuthPI_carObject.arresting_assailant) {
-		DriveCar();
-		var b2b = SearchCarIsAhead(sleuthPI_carObject);
-		if (b2b) SwapLanes(sleuthPI_carObject);
-		var a = SpotAssailant();
-		if (a != false) assailant = a;
-		if (assailant) sleuthPI_carObject.chasing_assailant = true;
+	if (!Detective_CarObject.Tailing_Criminal && !Detective_CarObject.IsApprehending_Criminal) {
+		driveCar();
+		for (var i = 0; i < Traffic_List.length; i++) {
+			var b2b = carAhead(Detective_CarObject, Traffic_List[i]);
+			if (b2b) changeLanes(Detective_CarObject);
+		}
+		identifyCriminal();
+		if (criminal) Detective_CarObject.Tailing_Criminal = true;
 	}
-	else if (!sleuthPI_carObject.arresting_assailant) {
-		ChaseAssailant();
-		DriveCar();
+	else if (!Detective_CarObject.IsApprehending_Criminal) {
+		pursueCriminal();
+		driveCar();
 	}
 
 
 	////////////////////// HANDLE ASSAILANT /////////////////////////
 
-	if (assailant) {
-		if (!assailant.isDetained) {
-			assailant.gas_amt = 5;
-			var b2b = SearchCarIsAhead(assailant);
-			if (b2b) {
-				if (b2b.licence_plate != assailant.licence_plate) {
-					SwapLanes(assailant);
+	if (criminal) {
+		if (!criminal.isArrested) {
+			criminal.Gas_Val = 5;
+			for (var i = 0; i < Traffic_List.length; i++) {
+				var b2b = carAhead(criminal, Traffic_List[i]);
+				if (b2b) {
+					if (b2b.Licence_Plate != criminal.Licence_Plate) {
+						changeLanes(criminal);
+					}
 				}
 			}
 		}
@@ -269,16 +270,16 @@ function draw() {
 
 	//////////////////////HANDLE THE OTHER CARS//////////////////////
 
-	for (var i = 0; i < Vehicles_Array.length; i++) {
-		Vehicles_Array[i].kms_amt += Vehicles_Array[i].gas_amt;
-		Vehicles_Array[i].coordinate_y = sleuthPI_carObject.coordinate_y - Vehicles_Array[i].kms_amt + sleuthPI_carObject.kms_amt;
+	for (var i = 0; i < Traffic_List.length; i++) {
+		Traffic_List[i].Kms_Driven += Traffic_List[i].Gas_Val;
+		Traffic_List[i].y = Detective_CarObject.y - Traffic_List[i].Kms_Driven + Detective_CarObject.Kms_Driven;
 
-		if (assailant) {
-			if (assailant.isDetained) {
-				if (Vehicles_Array[i].coordinate_x == sleuthPI_carObject.coordinate_x) {
-					if (Vehicles_Array[i].kms_amt < sleuthPI_carObject.kms_amt) {
-						if (Vehicles_Array[i].kms_amt - sleuthPI_carObject.kms_amt < 200) {
-							SwapLanes(Vehicles_Array[i]);
+		if (criminal) {
+			if (criminal.isArrested) {
+				if (Traffic_List[i].x == Detective_CarObject.x) {
+					if (Traffic_List[i].Kms_Driven < Detective_CarObject.Kms_Driven) {
+						if (Traffic_List[i].Kms_Driven - Detective_CarObject.Kms_Driven < 200) {
+							changeLanes(Traffic_List[i]);
 						}
 					}
 				}
@@ -299,8 +300,8 @@ function drawRoad() {
 
 	for (var i = -1; i < 20; i++) {
 		line(
-			roadLeftEdge + roadWidth / 2, i * 100 + (sleuthPI_carObject.kms_amt % 100),
-			roadLeftEdge + roadWidth / 2, i * 100 + 70 + (sleuthPI_carObject.kms_amt % 100)
+			roadLeftEdge + roadWidth / 2, i * 100 + (Detective_CarObject.Kms_Driven % 100),
+			roadLeftEdge + roadWidth / 2, i * 100 + 70 + (Detective_CarObject.Kms_Driven % 100)
 		);
 	}
 }
@@ -308,39 +309,39 @@ function drawRoad() {
 function drawCars() {
 	//draw the detective car
 
-	drawExhaust(sleuthPI_carObject);
+	drawExhaust(Detective_CarObject);
 	image
 		(
 			carImages["detective"],
-			sleuthPI_carObject.coordinate_x - carImages["detective"].width / 2 + random(-sleuthPI_carObject.engineRumble_value, sleuthPI_carObject.engineRumble_value),
-			sleuthPI_carObject.coordinate_y + random(-sleuthPI_carObject.engineRumble_value, sleuthPI_carObject.engineRumble_value)
+			Detective_CarObject.x - carImages["detective"].width / 2 + random(-Detective_CarObject.EngineShudder_Amount, Detective_CarObject.EngineShudder_Amount),
+			Detective_CarObject.y + random(-Detective_CarObject.EngineShudder_Amount, Detective_CarObject.EngineShudder_Amount)
 		);
 
 	//draw all other cars
 
-	for (var i = 0; i < Vehicles_Array.length; i++) {
-		if (Vehicles_Array[i].coordinate_y < height && Vehicles_Array[i].coordinate_y > -height / 2) {
+	for (var i = 0; i < Traffic_List.length; i++) {
+		if (Traffic_List[i].y < height && Traffic_List[i].y > -height / 2) {
 			image(
-				carImages[Vehicles_Array[i].car_type],
-				Vehicles_Array[i].coordinate_x - carImages[Vehicles_Array[i].car_type].width / 2,
-				Vehicles_Array[i].coordinate_y
+				carImages[Traffic_List[i].Car_Variety],
+				Traffic_List[i].x - carImages[Traffic_List[i].Car_Variety].width / 2,
+				Traffic_List[i].y
 			);
-			RunCarEngine(Vehicles_Array[i]);
+			cycleMotor(Traffic_List[i]);
 
-			drawExhaust(Vehicles_Array[i]);
+			drawExhaust(Traffic_List[i]);
 		}
 	}
 
 }
 
-function RunCarEngine(car) {
+function cycleMotor(car) {
 
-	car.exhaust.push({ size: 2, x: car.coordinate_x, y: car.coordinate_y + carImages[car.car_type].height });
+	car.exhaust.push({ size: 2, x: car.x, y: car.y + carImages[car.Car_Variety].height });
 
 	for (var i = car.exhaust.length - 1; i >= 0; i--) {
 
-		car.exhaust[i].y += max(0.75, car.gas_amt / 3);
-		if (car.car_type != "detective") car.exhaust[i].y += (sleuthPI_carObject.gas_amt - car.gas_amt);
+		car.exhaust[i].y += max(0.75, car.Gas_Val / 3);
+		if (car.Car_Variety != "detective") car.exhaust[i].y += (Detective_CarObject.Gas_Val - car.Gas_Val);
 		car.exhaust[i].x += random(-1, 1);
 		car.exhaust[i].size += 0.5;
 

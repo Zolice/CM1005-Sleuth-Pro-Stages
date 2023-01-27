@@ -101,7 +101,7 @@ To obtain the original unedited files, unzip the zip files in the respective fol
 - [x] Stage 1 - Mobilizes
 - [x] Stage 2 - Downtown traffic
 - [x] Stage 3 - Where's Vannevar
-- [ ] Stage 4 - High speed chase (Incomplete)
+- [x] Stage 4 - High speed chase
 
 ## Case 801 - The case of the Cooley Gang
 - [x] Stage 1 - Rigoletto
@@ -112,7 +112,7 @@ To obtain the original unedited files, unzip the zip files in the respective fol
 ## Case 802 - The case of Monte Carlo
 - [x] Stage 1 - Card Shark
 - [x] Stage 2 - King of Cards
-- [ ] Stage 3 - Card Counter(Incomplete)
+- [x] Stage 3 - Card Counter
 - [ ] Stage 4 - Club Criminal
 
 # Incomplete Cases
