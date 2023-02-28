@@ -105,13 +105,11 @@ function identifyCriminal() {
 	 - if a match is found then the car in question is assigned to the global variable criminal.
 	*/
 
-	for (var i = 0; i < Traffic_List.length; i++) {
-		if (checkVehicleIsParallel(Detective_CarObject, Traffic_List[i])) {
-			if (Traffic_List[i].Licence_Plate === "OGPPYC") {
-				criminal = Traffic_List[i];
-			}
+	Traffic_List.forEach((car) => {
+		if (checkVehicleIsParallel(Detective_CarObject, car) && car.Licence_Plate === "OGPPYC") {
+			criminal = car;
 		}
-	}
+	})
 }
 
 
@@ -128,16 +126,17 @@ function pursueCriminal() {
 
 	if (Detective_CarObject.Tailing_Criminal && criminal) {
 		Detective_CarObject.Gas_Val = min(Detective_CarObject.Gas_Val * 1.001, 6);
-		for (var i = 0; i < Traffic_List.length; i++) {
-			if (carAhead(Detective_CarObject, Traffic_List[i])) {
-				if (Traffic_List[i].Licence_Plate === criminal.Licence_Plate) {
+
+		Traffic_List.forEach((car, i) => {
+			if (carAhead(Detective_CarObject, car)) {
+				if (car.Licence_Plate === criminal.Licence_Plate) {
 					bookCriminal(i);
 				}
 				else {
 					changeLanes(Detective_CarObject);
 				}
 			}
-		}
+		})
 	}
 }
 
